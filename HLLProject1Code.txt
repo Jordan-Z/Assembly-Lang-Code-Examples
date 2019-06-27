@@ -1,0 +1,114 @@
+Jordan Zech
+Comp Org
+HLL Code
+
+
+PROGRAM 0
+int RED = 14
+int GREEN = 18
+int YELLOW = 15
+int OUTPUT = 1
+int COUNT = 0
+String message = "10 9 8 7 6 5 4 3 2 1 Blastoff!!!"
+wiringPiSetupGpio()
+
+int i=10
+while (i < 10)
+	digitalWrite(RED, OUTPUT)
+	digitalWrite(GREEN, OUTPUT)
+	digitalWrite(YELLOW, OUTPUT)
+	delay(300)
+	digitalWrite(RED, 0)
+	digitalWrite(GREEN, 0)
+	digitalWrite(YELLOW, 0)
+	i++
+print(message)
+
+PROGRAM 1
+int RED = 14
+int GREEN = 18
+int YELLOW = 15
+int OUTPUT = 1
+int COUNT = 0
+int i = 0
+for (int i = 0, i < 3, i++)
+	while (i < 7)
+		if (i == 0)
+			all lights off
+			i++
+		if (i == 1)
+			digitalWrite(RED, OUTPUT)
+			delay(500)
+			digitalWrite(RED, 0)
+			i++
+		if (i == 2)
+			digitalWrite(YELLOW, OUTPUT)
+			delay(500)
+			digitalWrite(YELLOW, 0)
+			i++
+		if (i == 3)
+			digitalWrite(YELLOW, OUTPUT)
+			digitalWrite(RED, OUTPUT)
+			delay(500)
+			digitalWrite(RED, 0)
+			digitalWrite(YELLOW, 0)
+			i++
+		if (i == 4)
+			digitalWrite(GREEN, OUTPUT)
+			delay(500)
+			digitalWrite(GREEN, 0)
+			i++
+		if (i ==5)
+			digitalWrite(GREEN, OUTPUT)
+			digitalWrite(RED, OUTPUT)
+			delay(500)
+			digitalWrite(GREEN, 0)
+			digitalWrite(RED, 0)
+			i++
+		if (i == 6)
+			digitalWrite(GREEN, OUTPUT)
+			digitalWrite(YELLOW, OUTPUT)
+			delay(500)
+			digitalWrite(GREEN, 0)
+			digitalWrite(YELLOW, 0)
+			i++
+		if i == 7
+			digitalWrite(RED, OUTPUT)
+			digitalWrite(GREEN, OUTPUT)
+			digitalWrite(YELLOW, OUTPUT)
+			delay(500)
+			digitalWrite(RED, 0)
+			digitalWrite(GREEN, 0)
+			digitalWrite(YELLOW, 0)
+			i++
+PROGRAM 2
+int RED = 14
+int GREEN = 18
+int YELLOW = 15
+int OUTPUT = 1
+
+while(control-c to break)
+	if (switch down)
+		while
+			digitalWrite(GREEN, OUTPUT)
+			delay(500)
+			digitalWrite(GREEN, 0)
+			digitalWrite(YELLOW, OUTPUT)
+			delay(500)
+			digitalWrite(YELLOW, 0)
+			digitalWrite(RED, OUTPUT)
+			delay(500)
+			digitalWrite(RED, 0)
+	else
+		while
+			digitalWrite(RED, OUTPUT)
+			delay(500)
+			digitalWrite(RED, 0)
+			digitalWrite(YELLOW, OUTPUT)
+			delay(500)
+			digitalWrite(YELLOW, 0)
+			digitalWrite(GREEN, OUTPUT)
+			delay(500)
+			digitalWrite(GREEN, 0)
+			
+		digitalWrite(YELLOW, OUTPUT)

@@ -1,0 +1,87 @@
+.global main
+.func main
+
+.data
+
+DELAY_MS = 300
+RED = 14
+GREEN = 18
+YELLOW = 15
+OUTPUT = 1
+INPUT = 0
+count: .asciz "%d "       @like using printf in java
+message: .asciz "Blastoff!!"
+
+.text
+
+main:
+push {lr}
+bl wiringPiSetupGpio
+bl pinmode         @calls pinmode function to set pin #'s
+
+pinmode:
+push {lr}
+mov r0, #RED
+mov r1, #OUTPUT
+bl  pinMode
+
+mov r0, #GREEN
+mov r1, #OUTPUT
+bl pinMode
+
+mov r0, #YELLOW
+mov r1, #OUTPUT
+bl pinMode
+
+pop {lr}
+bx lr
+
+mov r4, #10				@ movs 10 into r4
+while:
+cmp r4, #0				@checks if r4 is == 0
+beq done				@if r4 == 0 goto done
+
+mov r0, #GREEN          @turns green, yellow, and red on
+mov r1, #1
+bl digitalWrite
+
+mov r0, #YELLOW
+mov r1, #1
+bl digitalWrite
+
+mov r0, #RED
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS		@delay
+bl delay
+
+mov r0, #GREEN      	@then turn them off
+mov r1, #0
+bl digitalWrite
+
+mov r0, #YELLOW
+mov r1, #0
+bl digitalWrite
+
+mov r0, #RED
+mov r1, #0
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r1, r4				@movs r4 number were counting with to r1
+ldr r0, =count			@takes address of count to r0
+bl printf				@printf takes parameters r1 and stores in r0
+
+sub r4, r4, #1			@r4 - 1 stored in r4
+b while					@goes back through while loop
+
+
+
+done:
+ldr r0, =message
+bl puts					@prints message
+pop {lr}
+bx lr

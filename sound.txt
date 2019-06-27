@@ -1,0 +1,53 @@
+.func main
+.global main
+
+.data
+setupErrorMessage: .asciz "setup has failed"
+softToneErrorMessage: .asciz "softtone setup has failed"
+
+BUZZER_PIN = 20
+notes: .word 1750, 500, 2500, 500, 1750, 500, 1750              @ sound array with 7 elements
+delays: .word 500, 250, 100, 250, 500, 250, 500                 @ duration array with 7 elements
+.text
+
+main:
+push {lr}                 @ preserve lr
+
+bl wiringPiSetupGpio      @ returns condition code in r0
+mov r1, #-1               @ r1 <- -1
+cmp r0, r1                @ cmp wiringPiSetupGpio(), -1
+bne init_complete         @ if not equal, success!
+
+ldr r0, =setupErrorMessage @ r0 <- address of setupErrorMessage
+bl puts                   @ puts("setup has failed")
+mov r0, #1                @ condition code 1: setup failed
+b done                    @ very end of program
+
+init_complete:
+
+mov r8, #0              @ r8 <- 0
+
+mov r0, #BUZZER_PIN     @ r0 <- BUZZER_PIN
+bl softToneCreate       @ invoke softToneCreate()
+
+ldr r5, =notes          @ r5 <- addr of notes
+ldr r6, =delays         @ r6 <- addr of delays
+
+playMelody:
+cmp r8, #7              @ count r8 till 7
+bge done                @ if greter than equal to then go to done
+ldr r1, =notes          @ r1 <- addr of notes
+ldr r1, [r5, r8, LSL #2]@ r1 <- play[r5 + r8*4]
+mov r0, #BUZZER_PIN     @ r0 <- BUZZER_PIN
+bl softToneWrite        @ softToneWrite(BUZZER_PIN, r1)
+
+ldr r2, =delays         @ r2 <- addr of delays
+ldr r2, [r6, r8, LSL #2]@ r2 <- delays[r6 + r8*4]
+mov r0, r2              @ r0 <- r2
+bl delay                @ invoke delays
+add r8, r8, #1          @ r8++
+b playMelody
+
+done:   pop {lr}                @ restore lr
+        bx lr                   @ return from whence we came
+

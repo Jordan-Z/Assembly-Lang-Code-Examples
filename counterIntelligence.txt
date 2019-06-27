@@ -1,0 +1,170 @@
+.global main
+.func main
+.data
+
+DELAY_MS = 500
+RED = 14
+GREEN = 18
+YELLOW = 15
+OUTPUT = 1
+INPUT = 0
+
+main:
+push {lr}
+bl wiringPiSetupGpio
+
+mov r0, #RED
+mov r1, #1
+bl  pinMode
+
+mov r0, #GREEN
+mov r1, #1
+bl pinMode
+
+mov r0, #YELLOW
+mov r1, #1
+bl pinMode
+
+
+mov r3, #3 			@need loop to run 3 times so store 3 in r3
+while:				@while loop
+cmp r3, #0			@compare r3 with 0
+beq done:			@if r3 ==0 goto done
+					@bl calls the function zero, one, two,... etc
+bl zero
+bl one
+bl zero
+bl two
+bl zero
+bl three
+bl zero
+bl four
+bl zero
+bl five
+bl zero
+sub r3, r3, #1
+b while
+
+zero:       @turns lights off
+push {lr}
+mov r0, #RED
+mov r1, #0
+bl  digitalWrite
+
+mov r0, #GREEN
+mov r1, #0
+bl digitalWrite
+
+mov r0, #YELLOW
+mov r1, #0
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+one:            @turns red light on
+push {lr}
+mov r0, #RED
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+two:         @turns yellow light on
+push {lr}
+mov r0, #YELLOW
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+
+three:       @turns red and yellow light on
+push {lr}
+mov r0, #RED
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #YELLOW
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+
+four:        @turns green light on
+push {lr}
+mov r0, #GREEN
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+pop {lr}
+bx lr
+
+five:          @turns green and red light on
+push {lr}
+mov r0, #GREEN
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #RED
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+six:         @turns green and yellow light on
+push {lr}
+mov r0, #GREEN
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #YELLOW
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+
+seven:      @turns green, yellow, and red lights on
+push {lr}
+mov r0, #GREEN
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #YELLOW
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #RED
+mov r1, #1
+bl  digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+pop {lr}
+bx lr
+
+done:
+pop {lr}
+bx lr

@@ -1,0 +1,125 @@
+.global main
+.func main
+.data
+
+DELAY_MS = 500
+RED = 14
+GREEN = 18
+YELLOW = 15
+OUTPUT = 1
+INPUT = 0
+COUNT = 0
+SWITCH_PIN = 7
+INPUT = 0
+PUD_OFF = 0
+PUD_DOWN = 1
+PUD_UP = 2
+SWITCH_UP = 1
+SWITCH_DOWN = 0
+
+main:
+push {lr}          @ saves lr
+bl wiringPiSetupGpio    @sets up wiringPi calls builtin function
+
+mov r0, #RED             @pinMode enables the led lights. sets the pin #'s
+mov r1, #1
+bl  pinMode 
+mov r0, #GREEN
+mov r1, #1
+bl pinMode
+
+mov r0, #YELLOW
+mov r1, #1
+bl pinMode
+
+mov r0, #SWITCH_PIN       @sets switch pin using pinMode function
+mov r1, #INPUT
+bl pinMode
+
+checkButton:             @checks if button is up or down and sends program
+							@to the correct line of code if switch is up or down
+
+mov r0, #SWITCH_PIN
+bl digitalRead
+
+cmp r0, #SWITCH_UP
+bne switchDown
+b switchUp
+b done
+
+switchDown:       @switch down is green, yellow, red loop
+
+mov r0, #GREEN
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r0, #GREEN
+mov r1, #0
+bl digitalWrite
+
+mov r0, #YELLOW
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r0, #YELLOW
+mov r1, #0
+bl digitalWrite
+
+mov r0, #RED
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r0, #RED
+mov r1, #0
+bl digitalWrite
+
+b checkButton        @check button again to make sure it is inifinte loop
+
+
+switchUp:             @switch up is red, yellow, green
+
+mov r0, #RED
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r0, #RED
+mov r1, #0
+bl digitalWrite
+
+mov r0, #YELLOW
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r0, #YELLOW
+mov r1, #0
+bl digitalWrite
+
+mov r0, #GREEN
+mov r1, #1
+bl digitalWrite
+
+mov r0, #DELAY_MS
+bl delay
+
+mov r0, #GREEN
+mov r1, #0
+bl digitalWrite
+b checkButton
+
+done: pop {lr}
+      bx lr
